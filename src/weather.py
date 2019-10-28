@@ -5,6 +5,7 @@ class WeatherObservationType(Enum):
     # TMIN and TMAX are the values used in the dataset to define the min/max temp observations
     TEMPERATURE_MAX = "TMAX"
     TEMPERATURE_MIN = "TMIN"
+    TEMPERATURE_AVG = "TAVG"
     #   We don't care for any other element (reading) types, so we just mark them as unknown
     UNKNOWN = 0
 
@@ -55,6 +56,8 @@ class Observation:
             self.Type = WeatherObservationType.TEMPERATURE_MAX
         elif values[2] == WeatherObservationType.TEMPERATURE_MIN.value:
             self.Type = WeatherObservationType.TEMPERATURE_MIN
+        elif values[2] == WeatherObservationType.TEMPERATURE_AVG.value:
+            self.Type = WeatherObservationType.TEMPERATURE_AVG
         else:
             self.Type = WeatherObservationType.UNKNOWN
             # Don't bother determining any more values, as this observation won't be used if the type is UNKNOWN
