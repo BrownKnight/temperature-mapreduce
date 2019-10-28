@@ -3,20 +3,20 @@ from enum import Enum
 
 class WeatherObservationType(Enum):
     # TMIN and TMAX are the values used in the dataset to define the min/max temp observations
-    TemperatureMax = "TMAX"
-    TemperatureMin = "TMIN"
+    TEMPERATURE_MAX = "TMAX"
+    TEMPERATURE_MIN = "TMIN"
     #   We don't care for any other element (reading) types, so we just mark them as unknown
     UNKNOWN = 0
 
 
 class WeatherObservationLocation(Enum):
-    Oxford = "UK000056225"
-    Waddington = "UK000003377"
+    OXFORD = "UK000056225"
+    WADDINGTON = "UK000003377"
     #   We don't care for any other locations, so just mark as unknown
     UNKNOWN = 0
 
 
-class WeatherObservation:
+class Observation:
 
     Location = None
     Date = None
@@ -37,10 +37,10 @@ class WeatherObservation:
         values = line.split(",")
 
         # Determine the location
-        if values[0] == WeatherObservationLocation.Oxford.value:
-            self.Location = WeatherObservationLocation.Oxford
-        elif values[0] == WeatherObservationLocation.Waddinton.value:
-            self.Location = WeatherObservationLocation.Waddinton
+        if values[0] == WeatherObservationLocation.OXFORD.value:
+            self.Location = WeatherObservationLocation.OXFORD
+        elif values[0] == WeatherObservationLocation.WADDINGTON.value:
+            self.Location = WeatherObservationLocation.WADDINGTON
         else:
             self.Location = WeatherObservationLocation.UNKNOWN
             # If it's not a location we care about, don't bother determining any other values, as this observation
@@ -51,10 +51,10 @@ class WeatherObservation:
         self.Date = values[1]
 
         # Determine the type of observation
-        if values[2] == WeatherObservationType.TemperatureMax.value:
-            self.Type = WeatherObservationType.TemperatureMax
-        elif values[2] == WeatherObservationType.TemperatureMin.value:
-            self.Type = WeatherObservationType.TemperatureMin
+        if values[2] == WeatherObservationType.TEMPERATURE_MAX.value:
+            self.Type = WeatherObservationType.TEMPERATURE_MAX
+        elif values[2] == WeatherObservationType.TEMPERATURE_MIN.value:
+            self.Type = WeatherObservationType.TEMPERATURE_MIN
         else:
             self.Type = WeatherObservationType.UNKNOWN
             # Don't bother determining any more values, as this observation won't be used if the type is UNKNOWN
