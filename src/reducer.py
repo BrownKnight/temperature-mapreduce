@@ -19,7 +19,7 @@ for line in sys.stdin:
         else:
             temp_difference = last_temp - current_temp
 
-        print("%s\t%s" % (current_key, temp_difference))
+        print("%s,%s" % (current_key, temp_difference))
         # Reset the last_temp to the error value
         last_temp = -9999
     else:
