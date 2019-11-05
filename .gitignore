@@ -105,3 +105,8 @@ venv.bak/
 
 # PyCharm config files
 .idea
+
+# Data/local test files
+test/
+output/
+processedoutput/
