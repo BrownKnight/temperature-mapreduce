@@ -11,16 +11,16 @@ fi
 
 if [ -z $CLUSTER_NAME ]; then
     echo "Environment Variable CLUSTER_NAME has not been set, using adhoot-cccw-cluster";
-    $CLUSTER_NAME="cluster-adhoot-cccw";
+    CLUSTER_NAME=cluster-adhoot-cccw;
 else
     echo "Using Environment Variable CLUSTER_NAME ($CLUSTER_NAME)";
 fi
 
-if [ -z $CLISTER_REGION ]; then
-    echo "Environment Variable CLISTER_REGION has not been set, using us-central1";
-    $CLISTER_REGION="us-central1";
+if [ -z $CLUSTER_REGION ]; then
+    echo "Environment Variable CLUSTER_REGION has not been set, using us-central1";
+    CLUSTER_REGION="us-central1";
 else
-    echo "Using Environment Variable CLISTER_REGION ($CLUSTER_NAME)";
+    echo "Using Environment Variable CLUSTER_REGION ($CLUSTER_REGION)";
 fi
 
 InputPath="gs://adhoot-cccw/input"
