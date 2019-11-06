@@ -31,7 +31,7 @@ echo "Running via Hadoop Streaming"
 echo "Input Files: $InputPath"
 echo "Intermediate Output Files: $IntermediatePath"
 # time $HADOOP_HOME/bin/hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-$HADOOP_VERSION.jar -input $InputPath -output $IntermediatePath -mapper "python3 src/mapper.py" -reducer "python3 src/reducer.py"
-time gcloud dataproc jobs submit hadoop --cluster $CLUSTER_NAME --region=$CLUSTER_REGION --jar file:///usr/lib/hadoop-mapreduce/hadoop-streaming.jar --files=src/mapper.py,src/reducer.py -- -mapper src/mapper.py -reducer src/reducer.py -input $InputPath -output $IntermediatePath
+time gcloud dataproc jobs submit hadoop --cluster $CLUSTER_NAME --region=$CLUSTER_REGION --jar file:///usr/lib/hadoop-mapreduce/hadoop-streaming.jar --files=src/mapper.py,src/reducer.py,src/weather.py -- -mapper src/mapper.py -reducer src/reducer.py -input $InputPath -output $IntermediatePath
 echo "Hadoop Streaming complete"
 
 

@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import sys
+# This is required as a sort of "hack" to overcome the weird system path issues in hadoop streaming/gcloud dataproc
 sys.path.append("./")
 from weather import *
 
