@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import sys
+sys.path.append("./")
 from weather import *
 
 for line in sys.stdin:
