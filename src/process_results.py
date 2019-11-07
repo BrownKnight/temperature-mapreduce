@@ -1,6 +1,8 @@
 # The hadoop streaming process might output the result into multiple files in an output directory
-# This script will take all of these files in a specified directory and process them into two CSV files for
-# each location, allowing us to create two separate plots
+# This script will take all of these files in a specified directory and process them into seperate CSV files for
+# each location, allowing us to create separate plots
+# The script is designed to work with any number of locations depending on the input, so minimal/no maintenence will be
+# required for this script to use it for other locations
 
 import sys
 import tempfile
@@ -13,7 +15,7 @@ from google.cloud import storage
 # region Google Storage Helpers
 
 def download_from_gs(url, destination):
-    print("Downloading to %s to %s" % (url, destination))
+    print("Downloading '%s' to '%s'" % (url, destination))
 
     # url will be in the format gs://<bucket_name>, and we just want the name of the bucket
     _, gs_path = url.split("//")
@@ -27,7 +29,7 @@ def download_from_gs(url, destination):
     # Download each file in the blob separately, as downloading a whole folder is not possible
     for blob in blobs:
         destination_path = path.join(destination, blob.name.replace("/", "_"))
-        print("Object '%s' will be downloaded to '%s'." % (blob.name, destination_path))
+        print("Object '%s' will be downloaded to '%s'" % (blob.name, destination_path))
         blob.download_to_filename(destination_path)
         print("File Downloaded")
 
