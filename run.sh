@@ -23,6 +23,10 @@ else
     echo "Using Environment Variable CLUSTER_REGION ($CLUSTER_REGION)";
 fi
 
+echo "====================================="
+echo ""
+echo "====================================="
+
 InputPath="gs://adhoot-cccw/input"
 IntermediatePath="gs://adhoot-cccw/intermediate"
 OutputPath="gs://adhoot-cccw/output"
@@ -34,10 +38,17 @@ echo "Intermediate Output Files: $IntermediatePath"
 time gcloud dataproc jobs submit hadoop --cluster $CLUSTER_NAME --region=$CLUSTER_REGION --jar file:///usr/lib/hadoop-mapreduce/hadoop-streaming.jar --files=src/mapper.py,src/reducer.py,src/weather.py -- -mapper src/mapper.py -reducer src/reducer.py -input $InputPath -output $IntermediatePath
 echo "Hadoop Streaming complete"
 
+echo "====================================="
+echo ""
+echo "====================================="
 
 echo "Now processing results"
 echo "Intermediate Output Files: $IntermediatePath"
 echo "Output Files: $OutputPath"
 time python3 src/process_results.py $IntermediatePath $OutputPath
+
+echo "====================================="
+echo ""
+echo "====================================="
 
 echo "Total Time Elapsed: $((($SECONDS / 60) % 60))min $(($SECONDS % 60))sec"
