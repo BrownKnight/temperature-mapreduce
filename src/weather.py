@@ -1,6 +1,7 @@
 #!/usr/bin/python3
+
 # This class is essentially just a helper class to make the code in our mapper/reducer more readable,
-# and improve the maintainability of the code by making it such that you onyl have to edit this single
+# and improve the maintainability of the code by making it such that you only have to edit this single
 # script to add new locations/measurements, you don't have to make any changes to the mapper/reducer itself
 
 from enum import Enum

@@ -46,3 +46,9 @@ If you have hadoop installed locally, you can use the `run-with-hadoop-streaming
 with multiple mappers/reducers in the same way that running it on Google's Cloud infrastructure would.
 Output will be saved to the `./output/` directory. You may need to set the `HADOOP_HOME` environment variable to the
 location of your hadoop installation before running this script.
+
+#### Prerequisites
+- To use data from Google Cloud Storage (i.e. `gs://` links) you will need to ensure your python environment 
+has the `google-cloud-storage` python package installed
+- To create plots using the `src/plotter.py` script, you need to ensure the python environment has the `matplotlib` 
+python package installed

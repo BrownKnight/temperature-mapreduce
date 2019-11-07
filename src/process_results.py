@@ -1,7 +1,10 @@
-# The hadoop streaming process might output the result into multiple files in an output directory
-# This script will take all of these files in a specified directory and process them into seperate CSV files for
+#!/usr/bin/python3
+
+# The hadoop streaming process will most likely output the result into multiple files (1 for each reducer users)
+# in an output directory
+# This script will take all of these files in a specified directory and process them into separate CSV files for
 # each location, allowing us to create separate plots
-# The script is designed to work with any number of locations depending on the input, so minimal/no maintenence will be
+# The script is designed to work with any number of locations depending on the input, so minimal/no maintenance will be
 # required for this script to use it for other locations
 
 import sys
