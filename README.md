@@ -20,7 +20,7 @@ the reducers and create one-column separate csv files for each location
 #### via Google Cloud Shell (Recommended)
 1. If you don't have one already, create a new Google Dataproc cluster in Google Cloud
 2. If you don't have already, create a Google Storage Bucket to store the input/outputs of this program in
-<br> NOTE: There should be no folders in the bucker called `intermediate` or `output`
+<br> NOTE: There should be no folders in the bucket called `intermediate` or `output`
 3. Upload your dataset to your Google Storage Bucket. The script will look for the input at `gs://<bucket_name>/input`
 4. Open Cloud Shell and clone this git repository. You can either replicate the repository in 
 'Google Source Repositories', or clone straight from GitHub.
