@@ -23,32 +23,45 @@ else
     echo "Using Environment Variable CLUSTER_REGION ($CLUSTER_REGION)";
 fi
 
-echo "====================================="
+if [ -z $GOOGLE_BUCKET_NAME ]; then
+    echo "Environment Variable GOOGLE_BUCKET_NAME has not been set, using adhoot-cccw";
+    GOOGLE_BUCKET_NAME="adhoot-cccw";
+else
+    echo "Using Environment Variable GOOGLE_BUCKET_NAME ($GOOGLE_BUCKET_NAME)";
+fi
+
 echo ""
 echo "====================================="
+echo " Hadoop Streaming Job "
+echo "====================================="
+echo ""
 
-InputPath="gs://adhoot-cccw/input"
-IntermediatePath="gs://adhoot-cccw/intermediate"
-OutputPath="gs://adhoot-cccw/output"
+InputPath="gs://$GOOGLE_BUCKET_NAME/input"
+IntermediatePath="gs://$GOOGLE_BUCKET_NAME/intermediate"
+OutputPath="gs://$GOOGLE_BUCKET_NAME/output"
 
-echo "Running via Hadoop Streaming"
 echo "Input Files: $InputPath"
 echo "Intermediate Output Files: $IntermediatePath"
 # time $HADOOP_HOME/bin/hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-$HADOOP_VERSION.jar -input $InputPath -output $IntermediatePath -mapper "python3 src/mapper.py" -reducer "python3 src/reducer.py"
 time gcloud dataproc jobs submit hadoop --cluster $CLUSTER_NAME --region=$CLUSTER_REGION --jar file:///usr/lib/hadoop-mapreduce/hadoop-streaming.jar --files=src/mapper.py,src/reducer.py,src/weather.py -- -mapper mapper.py -reducer reducer.py -input $InputPath -output $IntermediatePath
 echo "Hadoop Streaming complete"
 
-echo "====================================="
 echo ""
 echo "====================================="
+echo " Processing Results "
+echo "====================================="
+echo ""
 
-echo "Now processing results"
 echo "Intermediate Output Files: $IntermediatePath"
 echo "Output Files: $OutputPath"
 time python3 src/process_results.py $IntermediatePath $OutputPath
 
-echo "====================================="
 echo ""
 echo "====================================="
+echo " Plotting Data "
+echo "====================================="
+echo ""
+
+time python3 src/plotter.py
 
 echo "Total Time Elapsed: $((($SECONDS / 60) % 60))min $(($SECONDS % 60))sec"
