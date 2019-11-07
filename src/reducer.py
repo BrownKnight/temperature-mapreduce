@@ -7,7 +7,7 @@ sys.path.append("./")
 from weather import *
 
 # We will use -9999 as an error value, so it is obvious in the output if there is some erroneous value
-last_temp = -9999
+last_temp = -99999
 last_key = None
 last_observation_type = WeatherObservationType.UNKNOWN
 
