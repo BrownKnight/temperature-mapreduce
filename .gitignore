@@ -106,6 +106,9 @@ venv.bak/
 # PyCharm config files
 .idea
 
+#VSCode files
+.vscode
+
 # Data/local test files
 test/
 output/
