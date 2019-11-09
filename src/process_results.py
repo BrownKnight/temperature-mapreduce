@@ -60,7 +60,7 @@ def main(args):
                 date, location = key.split(".")
 
                 # We can filter out any erroneous values here
-                if float(value) > 9000:
+                if float(value) > 900:
                     print("Found a erroneous value for %s on %s (%s), skipping this value" % (location, date, value))
                 else:
                     # If it isn't an erroneous value, then add it to the values to be written to file
