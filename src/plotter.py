@@ -29,7 +29,7 @@ def main(args):
     # Set the size of the figure to roughly the height/width of an A4 page in landscape
     # Number of rows will be total number of csv files,
     # plus 1 (to account for the last plot being a combination plots of all the data)
-    fig, ax = plt.subplots(figsize=(12, 8), dpi=100, nrows=len(arg_input_paths) + 1, ncols=1)
+    fig, ax = plt.subplots(figsize=(12, 8), dpi=100, nrows=len(csv_file_paths) + 1, ncols=1)
 
     # Give the plots upto 4 different colours, to make it easier to differentiate them
     possible_plot_formats = ["b-", "g-", "r-", "y-"]

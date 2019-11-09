@@ -74,7 +74,9 @@ def main(args):
             for line in processed_output_files[location]:
                 location_data.append(line)
             location_data.sort()
-            file.writelines(location_data)
+
+            for line in location_data:
+                file.write(line + "\n")
 
     print("%s Processed Files have been written to %s" % (len(processed_output_files), processed_output_dir))
 
