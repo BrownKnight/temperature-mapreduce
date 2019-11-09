@@ -18,9 +18,12 @@ def download_from_gs(url, destination):
     # Download each file in the blob separately, as downloading a whole folder is not possible
     for blob in blobs:
         destination_path = path.join(destination, blob.name.split("/")[-1])
-        print("Object '%s' will be downloaded to '%s'" % (blob.name, destination_path))
-        blob.download_to_filename(destination_path)
-        print("File Downloaded")
+        if path.isfile(destination_path):
+            print("Object '%s' will be downloaded to '%s'" % (blob.name, destination_path))
+            blob.download_to_filename(destination_path)
+            print("File Downloaded")
+        else:
+            print("Destination path %s is not a file" % destination_path)
 
 
 def upload_to_gs(url, file_path):
