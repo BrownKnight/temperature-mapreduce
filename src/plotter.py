@@ -118,7 +118,7 @@ def output_figure_to_file(output_path, fig, temp_dir):
 
     # If the last path given to the script is a Google Storage path, then upload the plot there
     if output_path.startswith("gs://"):
-        upload_to_gs(path.join(output_path, "plots.png"), plot_file_path)
+        upload_to_gs(output_path, plot_file_path)
 
 
 if __name__ == "__main__":
