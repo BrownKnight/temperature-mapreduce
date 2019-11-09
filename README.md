@@ -42,6 +42,9 @@ You should find the resulting csv files and data plots at `gs://<bucket_name>/ou
 To run locally for testing purposes, you can use the `run-with-pipe.sh` script, which will process the dataset using a 
 single mapper and reducer on your local machine. Output will be saved to `output/result.csv`.
 
+If desired, you may use the `run.sh` script locally if you have the gcloud command-line utility installed locally, 
+pointing to your gcloud account
+
 If you have hadoop installed locally, you can use the `run-with-hadoop-streaming.sh` script to process your dataset 
 with multiple mappers/reducers in the same way that running it on Google's Cloud infrastructure would.
 Output will be saved to the `./output/` directory. You may need to set the `HADOOP_HOME` environment variable to the

@@ -62,6 +62,9 @@ echo " Plotting Data "
 echo "====================================="
 echo ""
 
-time python3 src/plotter.py
+Plots="$OutputFiles/plot_result.png"
+echo "Output Files: $OutputPath"
+echo "Plots: $Plots"
+time python3 src/plotter.py $OutputFiles $Plots
 
 echo "Total Time Elapsed: $((($SECONDS / 60) % 60))min $(($SECONDS % 60))sec"
