@@ -14,7 +14,7 @@ import tempfile
 def main(args):
     # Check the number of arguments are correct
     # Number of arguments should be at least 2 (python script name is included in args)
-    if len(args) < 3:
+    if len(args) < 2:
         print("At least two arguments should be provided, desired syntax is:")
         print("python3 plotter.py <path_to_data_csv_file> <path_to_second_data_file> ... <path_for_output_file>")
         quit()
