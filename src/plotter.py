@@ -14,8 +14,8 @@ import tempfile
 def main(args):
     # Check the number of arguments are correct
     # Number of arguments should be at least 2 (python script name is included in args)
-    if len(args) < 2:
-        print("At least one argument should be provided, desired syntax is:")
+    if len(args) < 3:
+        print("At least two arguments should be provided, desired syntax is:")
         print("python3 plotter.py <path_to_data_csv_file> <path_to_second_data_file> ... <path_for_output_file>")
         quit()
 
@@ -71,7 +71,7 @@ def get_csv_file_paths(input_paths, output_path):
                   "<google_storage_or_local_path_to_upload")
             quit()
 
-        directory_path = path.abspath(path.join(temp_dir.name, "plotter_input"))
+        directory_path = path.abspath(temp_dir.name)
         download_from_gs(input_paths[0], directory_path)
 
         # Redefine arg_paths as all the csv files in the new temp directory
