@@ -14,6 +14,7 @@ from os import makedirs
 import glob
 from google_storage_helpers import *
 
+
 def main(args):
     if len(args) != 3:
         print("This script requires the name of the output and new output directory as the only arguments")
@@ -86,4 +87,4 @@ def main(args):
 
 
 if __name__ == "__main__":
-    main(sys.args)
+    main(sys.argv)
