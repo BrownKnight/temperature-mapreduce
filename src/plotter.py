@@ -7,7 +7,7 @@ from os import path
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
-from google_storage_helpers import download_from_gs
+from google_storage_helpers import download_from_gs, upload_to_gs
 import tempfile
 
 
@@ -21,17 +21,46 @@ def main(args):
 
     # Get all the arguments apart from the first one (as the first one is name of the script)
     arg_paths = args[1:]
-    fig, ax = plt.subplots()
+
+    csv_file_paths, temp_dir = get_csv_file_paths(arg_paths)
+
+    # Set the size of the figure to 1/3rd the height of an A4 page, and the full width of an A4 page
+    fig, ax = plt.subplots(figsize=(8, 3.8), dpi=150, nrows=len(arg_paths) - 1, ncols=1)
+
+    # Give the plots upto 4 different colours, to make it easier to differentiate them
+
+    possible_plot_formats = ["b-", "g-", "r-", "y-"]
+
+    for index, csv_path in enumerate(csv_file_paths):
+        plot_from_csv_file(csv_path, fig.axes[index], possible_plot_formats[index % 4])
+
+    fig.autofmt_xdate()
+    plt.show()
+
+    # Output the plot as a file, to the directory specified in the program arguments
+    output_figure_to_file(arg_paths, fig, temp_dir)
+
+    # Cleanup the temp directory that would've been made if downloading from Google Storage
+    if arg_paths[0].startswith("gs://") or arg_paths[-1].startswith("gs://"):
+        temp_dir.cleanup()
+
+
+def get_csv_file_paths(arg_paths):
+    # If we are using Google Storage to download or upload files to, we need a temporary directory for files
+    # to be downloaded to/uploaded from
+    temp_dir = None
+    if arg_paths[0].startswith("gs://") or arg_paths[-1].startswith("gs://"):
+        temp_dir = tempfile.TemporaryDirectory()
 
     # If we are given a Google Storage directory, we need to download the directory and use the paths to
     # those files instead
     if arg_paths[0].startswith("gs://"):
-        if len(arg_paths) > 1:
-            print("When downloading from Google Storage, only 1 GS directory is supported at a time")
+        # There should only be two arguments when using GS, a path to download and a path to upload
+        if len(arg_paths) != 2:
+            print("When downloading from Google Storage, only 1 GS directory to download from is supported at a time")
+            print("Desired Syntax: python3 plotter.py <google_storage_path_to_download> <google_storage_path_to_upload")
             quit()
 
-        # Create a temporary directory on the local computer for the GS files to be downloaded to
-        temp_dir = tempfile.TemporaryDirectory()
         directory_path = path.abspath(path.join(temp_dir.name, "plotter_input"))
         download_from_gs(arg_paths[0], directory_path)
 
@@ -39,17 +68,10 @@ def main(args):
         csv_file_paths = [file_path for file_path in glob(directory_path + "/*") if
                           path.isfile(file_path) and file_path.endswith(".csv")]
     else:
-        csv_file_paths = arg_paths
+        # Use all but the last path as the last one is the output path
+        csv_file_paths = arg_paths[:-1]
 
-    for csv_path in csv_file_paths:
-        plot_from_csv_file(csv_path, ax, "r-")
-
-    fig.autofmt_xdate()
-    plt.show()
-
-    # TODO upload back to GS if the file came from GS
-    if arg_paths[0].startswith("gs://"):
-        temp_dir.cleanup()
+    return csv_file_paths, temp_dir
 
 
 def plot_from_csv_file(csv_path, ax, line_format):
@@ -71,8 +93,21 @@ def plot_from_csv_file(csv_path, ax, line_format):
     ax.xaxis.set_major_formatter(months_formatter)
     ax.xaxis.set_minor_locator(days)
     ax.set_xlim(keys[0] - datetime.timedelta(1), keys[-1])
+    ax.xlabel = "Date"
+    ax.ylabel = "Temperature Difference"
     ax.format_xdata = mdates.DateFormatter('%Y-%m-%d')
     ax.format_ydata = lambda x: '%1.1f' % x
+
+
+def output_figure_to_file(arg_paths, fig, temp_dir):
+    if arg_paths[-1].startswith("gs://"):
+        plot_file_path = path.abspath(path.join(temp_dir.name, "plotter_output.png"))
+    else:
+        plot_file_path = path.abspath(path.join(arg_paths[-1], "plotter_output.png"))
+    fig.savefig(plot_file_path)
+    # If the last path given to the script is a Google Storage path, then upload the plot there
+    if arg_paths[-1].startswith("gs://"):
+        upload_to_gs(path.join(arg_paths[1], "plots.png"), plot_file_path)
 
 
 if __name__ == "__main__":
