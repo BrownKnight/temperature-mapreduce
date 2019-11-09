@@ -68,8 +68,13 @@ def main(args):
 
     for location in processed_output_files:
         with open(path.join(processed_output_dir, location + ".csv"), "w+") as file:
+            location_data = []
+            # By using copying all the data for each location into an array before writing it to a file, we can sort
+            # the array into date-order (which due the the way we format dates, is the same as alphabetical order)
             for line in processed_output_files[location]:
-                file.write("%s\n" % line)
+                location_data.append(line)
+            location_data.sort()
+            file.writelines(location_data)
 
     print("%s Processed Files have been written to %s" % (len(processed_output_files), processed_output_dir))
 
