@@ -62,7 +62,7 @@ echo " Plotting Data "
 echo "====================================="
 echo ""
 
-Plots="$OutputFiles/plot_result.png"
+Plots="$OutputPath/plot_result.png"
 echo "Output Files: $OutputPath"
 echo "Plots: $Plots"
 time python3 src/plotter.py $OutputFiles $Plots
