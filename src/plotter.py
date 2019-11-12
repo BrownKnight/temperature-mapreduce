@@ -7,6 +7,7 @@ from os import path
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+import matplotlib.ticker as ticker
 from google_storage_helpers import download_from_gs, upload_to_gs
 import tempfile
 
@@ -42,6 +43,7 @@ def main(args):
         plot_axes_from_csv(csv_path, "All Locations", fig.axes[-1], possible_plot_formats[index % 4])
 
     fig.autofmt_xdate()
+    # Using setp we can set axes properties for all the axes in one line
     plt.setp(fig.axes[-1].get_xticklabels(), fontsize=10)
     plt.tight_layout()
     plt.show()
@@ -96,6 +98,8 @@ def plot_axes_from_csv(csv_path, axes_title, ax, line_format):
     ax.plot(keys, values, line_format)
     ax.set_title(axes_title)
 
+    # Format the x axis
+    ax.set_xlabel("Date", fontsize=8)
     months = mdates.MonthLocator()
     months_formatter = mdates.DateFormatter('%b-%Y')
     days = mdates.DayLocator()
@@ -103,9 +107,15 @@ def plot_axes_from_csv(csv_path, axes_title, ax, line_format):
     ax.xaxis.set_major_formatter(months_formatter)
     ax.xaxis.set_minor_locator(days)
     ax.set_xlim(keys[0] - datetime.timedelta(2), keys[-1])
-    ax.set_xlabel("Date", fontsize=5)
-    ax.set_ylabel("Temperature Difference (C)", fontsize=8)
+    ax.xaxis.grid(which="major", linewidth=0.5)
     ax.format_xdata = mdates.DateFormatter('%Y-%m-%d')
+
+    # Format the y axis
+    ax.yaxis.set_major_locator(ticker.MultipleLocator(5))
+    ax.yaxis.set_minor_locator(ticker.MultipleLocator(1))
+    ax.set_ylabel("Temperature Difference (C)", fontsize=8)
+    ax.yaxis.grid(which="minor", linewidth=0.5)
+    ax.yaxis.grid(which="major", linewidth=1.0)
     ax.format_ydata = lambda x: '%1.1f' % x
 
 
