@@ -59,12 +59,7 @@ def main(args):
                 key, value = line.split("-")
                 date, location = key.split(".")
 
-                # We can filter out any erroneous values here
-                if float(value) > 900:
-                    print("Found a erroneous value for %s on %s (%s), skipping this value" % (location, date, value))
-                else:
-                    # If it isn't an erroneous value, then add it to the values to be written to file
-                    processed_output_files[location].append("%s-%s" % (date, value))
+                processed_output_files[location].append("%s-%s" % (date, value))
 
     for location in processed_output_files:
         with open(path.join(processed_output_dir, location + ".csv"), "w+") as file:

@@ -30,18 +30,21 @@ for line in sys.stdin:
         # temperature difference for the day is 2*(difference between min/max & avg)
         # This requires us to make the assumption that the average temperature for the day is calculated by the
         # formula (max-min)/2
-        if current_observation_type == WeatherObservationType.TEMPERATURE_AVG \
-                or last_observation_type == WeatherObservationType.TEMPERATURE_AVG:
+        if current_observation_type == WeatherObservationType.TEMPERATURE_ZAVG \
+                or last_observation_type == WeatherObservationType.TEMPERATURE_ZAVG:
             temp_difference = temp_difference * 2
 
         # The temperature so far has been processed in tenths of degrees, b ut we want to output in
         # whole degrees with a decimal point
         temp_difference = temp_difference / 10
 
-        # We place a dash between the key/value instead of a comma do create a 1 column csv instead of a 2 column file,
-        # to satisfy the requirement in the specification
-        # This will need to be processed by the plotter to interpret the single column in the csv as 2 distinct values
-        print("%s-%s" % (current_key, temp_difference))
+        # If the temp difference is more than 900, then this will be an erroneous value 
+        # (i.e. most likely have 3 readings for this date)
+        if temp_difference < 900:
+            # We place a dash between the key/value instead of a comma do create a 1 column csv instead of a 2 column file,
+            # to satisfy the requirement in the specification
+            # This will need to be processed by the plotter to interpret the single column in the csv as 2 distinct values
+            print("%s-%s" % (current_key, temp_difference))
 
         # Reset the last_temp to the error value
         last_temp = -9999

@@ -11,7 +11,9 @@ class WeatherObservationType(Enum):
     # TMIN and TMAX are the values used in the dataset to define the min/max temp observations
     TEMPERATURE_MAX = "TMAX"
     TEMPERATURE_MIN = "TMIN"
-    TEMPERATURE_AVG = "TAVG"
+    # We name this value ZAVG to ensure that after hadoop has sorted the keys, the avg is always after the min/max
+    # This means that in cases where a data point has min/max and avg, we will always use min/max for the diff calcualted
+    TEMPERATURE_ZAVG = "TAVG"
     # We don't currently care for any other element (reading) types, so we just mark them as unknown
     UNKNOWN = 0
 
