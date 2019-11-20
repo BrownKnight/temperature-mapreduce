@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 import sys
 # This is required as a sort of "hack" to overcome the weird system path issues in hadoop streaming/gcloud dataproc
