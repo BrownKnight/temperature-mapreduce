@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/bin/env python3
 
 # This class is essentially just a helper class to make the code in our mapper/reducer more readable,
 # and improve the maintainability of the code by making it such that you only have to edit this single
