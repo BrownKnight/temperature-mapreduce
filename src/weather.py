@@ -25,9 +25,9 @@ class WeatherObservationLocation(Enum):
 
 
 class Observation:
-    Location: WeatherObservationLocation = None
+    Location = None
     Date = None
-    Type: WeatherObservationType = None
+    Type = None
     Temperature = None
 
     # Takes a line of data from the dataset and converts it into a object
