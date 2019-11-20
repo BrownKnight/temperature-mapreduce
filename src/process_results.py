@@ -57,8 +57,8 @@ def main(args):
 
         for location in processed_output_files:
             print("Uploading %s result file" % location)
-            upload_to_gs(path.join(arg_processed_output_dir, location + ".csv"),
-                         path.join(processed_output_dir, location + ".csv"))
+            upload_to_gs(path.join(arg_processed_output_dir, location.name + ".csv"),
+                         path.join(processed_output_dir, location.name + ".csv"))
 
         print("Cleaning up temporary directories")
         temp_dir.cleanup()
