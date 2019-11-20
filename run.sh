@@ -9,21 +9,21 @@ else
     echo "If you are NOT running this via Google Cloud Shell, please create a new credential file json to access Google Cloud Storage";
 fi
 
-if [ -z $CLUSTER_NAME ]; then
+if [ -z "$CLUSTER_NAME" ]; then
     echo "Environment Variable CLUSTER_NAME has not been set, using cluster-adhoot-cccw";
     CLUSTER_NAME=cluster-adhoot-cccw;
 else
     echo "Using Environment Variable CLUSTER_NAME ($CLUSTER_NAME)";
 fi
 
-if [ -z $CLUSTER_REGION ]; then
+if [ -z "$CLUSTER_REGION" ]; then
     echo "Environment Variable CLUSTER_REGION has not been set, using us-central1";
     CLUSTER_REGION="us-central1";
 else
     echo "Using Environment Variable CLUSTER_REGION ($CLUSTER_REGION)";
 fi
 
-if [ -z $GOOGLE_BUCKET_NAME ]; then
+if [ -z "$GOOGLE_BUCKET_NAME" ]; then
     echo "Environment Variable GOOGLE_BUCKET_NAME has not been set, using adhoot-cccw";
     GOOGLE_BUCKET_NAME="adhoot-cccw";
 else
@@ -42,7 +42,6 @@ OutputPath="gs://$GOOGLE_BUCKET_NAME/output"
 
 echo "Input Files: $InputPath"
 echo "Intermediate Output Files: $IntermediatePath"
-# time $HADOOP_HOME/bin/hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-$HADOOP_VERSION.jar -input $InputPath -output $IntermediatePath -mapper "python3 src/mapper.py" -reducer "python3 src/reducer.py"
 time gcloud dataproc jobs submit hadoop --cluster $CLUSTER_NAME --region=$CLUSTER_REGION --jar file:///usr/lib/hadoop-mapreduce/hadoop-streaming.jar --files=src/mapper.py,src/reducer.py,src/weather.py -- -mapper mapper.py -reducer reducer.py -input $InputPath -output $IntermediatePath
 echo "Hadoop Streaming complete"
 
@@ -67,4 +66,5 @@ echo "Output Files: $OutputPath"
 echo "Plots: $Plots"
 time python3 src/plotter.py $OutputPath $Plots
 
+# shellcheck disable=SC2004
 echo "Total Time Elapsed: $((($SECONDS / 60) % 60))min $(($SECONDS % 60))sec"

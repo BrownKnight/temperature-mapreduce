@@ -30,10 +30,10 @@ def main(args):
     # Set the size of the figure to roughly the height/width of an A4 page in landscape
     # Number of rows will be total number of csv files,
     # plus 1 (to account for the last plot being a combination plots of all the data)
-    fig, ax = plt.subplots(figsize=(12, 12), dpi=100, nrows=len(csv_file_paths) + 1, ncols=1)
+    fig, ax = plt.subplots(figsize=(14, 12), dpi=100, nrows=len(csv_file_paths) + 1, ncols=1, sharex=True)
 
     # Give the plots upto 4 different colours, to make it easier to differentiate them
-    possible_plot_formats = ["b-", "g-", "r-", "y-"]
+    possible_plot_formats = ["b^", "g*", "rs", "y*"]
 
     for index, csv_path in enumerate(csv_file_paths):
         location_name = path.basename(csv_path).split(".")[0]
@@ -85,15 +85,13 @@ def get_csv_file_paths(input_paths, output_path):
     return csv_file_paths, temp_dir
 
 
-def plot_axes_from_csv(csv_path, axes_title, ax, line_format):
-    str2date = lambda x: datetime.datetime.strptime(x.decode('ascii'), "%Y%m%d")
-    r = np.recfromcsv(csv_path, delimiter="-", converters={0: str2date})
+def str2date(x):
+    return np.datetime64(datetime.datetime.strptime(x.decode('ascii'), "%Y%m%d"))
 
-    keys = []
-    values = []
-    for record in r:
-        keys.append(record[0])
-        values.append(record[1])
+
+def plot_axes_from_csv(csv_path, axes_title, ax, line_format):
+    values = np.genfromtxt(csv_path)
+    keys = [i for i in range(len(values))]
 
     ax.plot(keys, values, line_format)
     ax.set_title(axes_title)
@@ -106,7 +104,6 @@ def plot_axes_from_csv(csv_path, axes_title, ax, line_format):
     ax.xaxis.set_major_locator(months)
     ax.xaxis.set_major_formatter(months_formatter)
     ax.xaxis.set_minor_locator(days)
-    ax.set_xlim(keys[0] - datetime.timedelta(2), keys[-1])
     ax.xaxis.grid(which="major", linewidth=0.5)
     ax.format_xdata = mdates.DateFormatter('%Y-%m-%d')
 
@@ -117,6 +114,7 @@ def plot_axes_from_csv(csv_path, axes_title, ax, line_format):
     ax.yaxis.grid(which="minor", linewidth=0.5)
     ax.yaxis.grid(which="major", linewidth=1.0)
     ax.format_ydata = lambda x: '%1.1f' % x
+    ax.set_ylim(0, 25)
 
 
 def output_figure_to_file(output_path, fig, temp_dir):

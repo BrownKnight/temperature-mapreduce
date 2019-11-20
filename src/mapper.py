@@ -22,4 +22,4 @@ for line in sys.stdin:
     # "<Date>.<Location>\t<Type>.<Temperature>"
     # e.g. "20180101.OXFORD\tTEMPERATURE_MIN.18"
     print(
-        "%s.%s\t%s.%s" % (observation.Date, observation.Location.name, observation.Type.name, observation.Temperature))
+        "%s.%s\t%s.%s" % (observation.Date, observation.Location.value, observation.Type.name, observation.Temperature))

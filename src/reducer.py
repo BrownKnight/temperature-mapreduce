@@ -4,9 +4,9 @@ import sys
 
 # This is required as a sort of "hack" to overcome the weird system path issues in hadoop streaming/gcloud dataproc
 sys.path.append("./")
-from weather import *
+from weather import WeatherObservationType
 
-# We will use -9999 as an error value, so it is obvious in the output if there is some erroneous value
+# We will use -99999 as an error value, so it is obvious in the output if there is some erroneous value
 last_temp = -99999
 last_key = None
 last_observation_type = WeatherObservationType.UNKNOWN
@@ -26,28 +26,17 @@ for line in sys.stdin:
     if current_key == last_key:
         temp_difference = abs(current_temp - last_temp)
 
-        # If the observation doesn't have a min & max but instead an min/max & avg, we can assume the actual
-        # temperature difference for the day is 2*(difference between min/max & avg)
-        # This requires us to make the assumption that the average temperature for the day is calculated by the
-        # formula (max-min)/2
-        if current_observation_type == WeatherObservationType.TEMPERATURE_ZAVG \
-                or last_observation_type == WeatherObservationType.TEMPERATURE_ZAVG:
-            temp_difference = temp_difference * 2
-
-        # The temperature so far has been processed in tenths of degrees, b ut we want to output in
+        # The temperature so far has been processed in tenths of degrees, but we want to output in
         # whole degrees with a decimal point
-        temp_difference = temp_difference / 10
+        temp_difference = temp_difference / 10.0
 
         # If the temp difference is more than 900, then this will be an erroneous value 
-        # (i.e. most likely have 3 readings for this date)
-        if temp_difference < 900:
-            # We place a dash between the key/value instead of a comma do create a 1 column csv instead of a 2 column file,
-            # to satisfy the requirement in the specification
-            # This will need to be processed by the plotter to interpret the single column in the csv as 2 distinct values
-            print("%s-%s" % (current_key, temp_difference))
+        if temp_difference < 9000:
+            # Output format: "<Date>.<Location>\t<Temperature_Difference>" e.g. "20180101.UK0000562251    10"
+            print("%s\t%s" % (current_key, temp_difference))
 
         # Reset the last_temp to the error value
-        last_temp = -9999
+        last_temp = -99999
         last_observation_type = WeatherObservationType.UNKNOWN
     else:
         last_temp = current_temp

@@ -32,7 +32,6 @@ IntermediatePath="output/intermediate"
 OutputPath="output/output"
 
 rm -r $IntermediatePath $OutputPath
-# mkdir $IntermediatePath $OutputPath
 
 echo "Input Files: $InputPath"
 echo "Intermediate Output Files: $IntermediatePath"
